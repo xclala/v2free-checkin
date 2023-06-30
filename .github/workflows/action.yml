@@ -1,0 +1,25 @@
+name: checkin
+run-name: v2free-checkin
+on: 
+  schedule:
+    - cron: '00 00 * * *'
+jobs:
+  preparation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11
+      - name: Install Dependencies
+        run: python -m pip install -r requirements.txt
+  checkin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check in
+        run: python app.py
+        env:
+          URL: https://w1.v2ai.top
+          EMAIL: xingdongxd2021@outlook.com
+          PASSWORD: ${{ secrets.V2FREE_PASSWORD }}
