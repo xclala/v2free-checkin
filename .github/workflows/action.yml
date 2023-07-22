@@ -8,19 +8,18 @@ on:
 jobs:
   checkin:
     runs-on: ubuntu-latest
+    env:
+      HEADER: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.58"
+      JSON: "{'email': 'xingdongxd2021@outlook.com', 'passwd': ${{ secrets.V2FREE_PASSWORD }}, 'remember_me': 'week'}"
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - name: Get cookies
+        uses: thinkdolabs/curl@master
         with:
-          python-version: 3.11
-
-      - name: Install Dependencies
-        run: python -m pip install -r requirements.txt
+          args: "-A '${{ HEADER }}' -c cookies -H 'Content-Type: application/json' -d '${{ JSON }}' https://v2free.org/auth/login"
         
       - name: Check in
-        run: python app.py
-        env:
-          EMAIL: xingdongxd2021@outlook.com
-          PASSWORD: ${{ secrets.V2FREE_PASSWORD }}
+        uses: thinkdolabs/curl@master
+        with:
+          args: "-A '${{ HEADER }}' -X POST -b cookies -H 'Content-Type: application/json' https://v2free.org/user/checkin"
