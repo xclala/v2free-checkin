@@ -20,7 +20,7 @@ jobs:
         with:
           url: 'https://v2free.org/auth/login'
           method: 'POST'
-          data: '{"email": "xingdongxd2021@outlook.com", "passwd": "${{ secrets.V2FREE_PASSWORD }}"}'
+          data: '{"email": "${{ secrets.V2FREE_EMAIL }}", "passwd": "${{ secrets.V2FREE_PASSWORD }}"}'
           customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}"}'
         
       - name: Check in
