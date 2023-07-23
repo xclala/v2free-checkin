@@ -9,17 +9,23 @@ jobs:
   checkin:
     runs-on: ubuntu-latest
     env:
-      HEADER: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.58"
-      JSON: "{'email': 'xingdongxd2021@outlook.com', 'passwd': ${{ secrets.V2FREE_PASSWORD }}, 'remember_me': 'week'}"
+      AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.58"
     steps:
       - uses: actions/checkout@v3
 
       - name: Get cookies
-        uses: thinkdolabs/curl@master
+        id: getCookies
+        uses: fjogeleit/http-request-action@main
         with:
-          args: "-A '${{ HEADER }}' -c cookies -H 'Content-Type: application/json' -d '${{ JSON }}' https://v2free.org/auth/login"
+          url: 'https://v2free.org/auth/login'
+          method: 'POST'
+          data: "{'email': 'xingdongxd2021@outlook.com', 'passwd': ${{ secrets.V2FREE_PASSWORD }}}"
+          customHeaders: '{"Content-Type": "application/json", "User-Agent": ${{ env.AGENT }}}'
         
       - name: Check in
-        uses: thinkdolabs/curl@master
+        uses: fjogeleit/http-request-action@main
         with:
-          args: "-A '${{ HEADER }}' -X POST -b cookies -H 'Content-Type: application/json' https://v2free.org/user/checkin"
+          url: 'https://v2free.org/user/checkin'
+          method: 'POST'
+          data: ''
+          customHeaders: '{"Content-Type": "application/json", "User-Agent": ${{ env.AGENT }}, "Cookie": ${{ fromJson(checkin.getCookies.output.headers).Set-Cookie }}}'
