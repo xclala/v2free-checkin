@@ -22,7 +22,6 @@ jobs:
           method: 'POST'
           data: '{"email": "xingdongxd2021@outlook.com", "passwd": "${{ secrets.V2FREE_PASSWORD }}"}'
           customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}"}'
-        run: echo ${{ fromJson(steps.getCookies.output.headers) }}
         
       - name: Check in
         uses: fjogeleit/http-request-action@main
@@ -30,4 +29,4 @@ jobs:
           url: 'https://v2free.org/user/checkin'
           method: 'POST'
           data: ''
-          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": "${{ fromJson(steps.getCookies.output.headers) }}"}'
+          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": "${{ fromJson(steps.getCookies.outputs.headers) }}"}'
