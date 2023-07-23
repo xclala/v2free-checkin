@@ -4,6 +4,7 @@ run-name: v2free-checkin
 on: 
   schedule:
     - cron: '00 00 * * *'
+  push:
 
 jobs:
   checkin:
