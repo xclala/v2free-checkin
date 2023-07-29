@@ -27,4 +27,4 @@ jobs:
           url: 'https://v2free.org/user/checkin'
           method: 'POST'
           data: ''
-          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": "${{ join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';') }}"}'
+          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": ${{ join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';') }} }'
