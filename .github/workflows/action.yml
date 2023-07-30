@@ -3,7 +3,7 @@ run-name: v2free-checkin
 
 on: 
   schedule:
-    - cron: 00 00 * * *
+    - cron: '00 00 * * *'
   push:
 
 jobs:
@@ -16,15 +16,15 @@ jobs:
         id: getCookies
         uses: fjogeleit/http-request-action@main
         with:
-          url: https://v2free.org/auth/login
-          method: POST
-          data: "{email: ${{ secrets.V2FREE_EMAIL }}, passwd: ${{ secrets.V2FREE_PASSWORD }}}"
-          customHeaders: "{Content-Type: application/json, User-Agent: ${{ env.AGENT }}}"
+          url: "https://v2free.org/auth/login"
+          method: "POST"
+          data: "{'email': '${{ secrets.V2FREE_EMAIL }}', 'passwd': '${{ secrets.V2FREE_PASSWORD }}'}"
+          customHeaders: "{'Content-Type': 'application/json', 'User-Agent': '${{ env.AGENT }}'}"
         
       - name: Check in
         uses: fjogeleit/http-request-action@main
         with:
-          url: https://v2free.org/user/checkin
-          method: POST
+          url: "https://v2free.org/user/checkin"
+          method: "POST"
           data: ""
-          customHeaders: "{Content-Type: application/json, User-Agent: ${{ env.AGENT }}, Cookie: ${{ join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';') }}}"
+          customHeaders: "{'Content-Type': 'application/json', 'User-Agent': '${{ env.AGENT }}', 'Cookie': '${{ join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';') }}'}"
