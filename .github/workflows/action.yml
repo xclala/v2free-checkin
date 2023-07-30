@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.58"
+      COOKIE: join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';')
     steps:
       - name: Get cookies
         id: getCookies
@@ -18,7 +19,7 @@ jobs:
         with:
           url: https://v2free.org/auth/login
           method: POST
-          data: "{'email': '${{ secrets.V2FREE_EMAIL }}', 'passwd': '${{ secrets.V2FREE_PASSWORD }}'}"
+          data: '{"email": "${{ secrets.V2FREE_EMAIL }}", "passwd": "${{ secrets.V2FREE_PASSWORD }}"}'
           customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}"}'
         
       - name: Check in
@@ -27,4 +28,4 @@ jobs:
           url: https://v2free.org/user/checkin
           method: POST
           data: ''
-          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": ${{ join(fromJson(steps.getCookies.outputs.headers).set-cookie, ';') }} }'
+          customHeaders: '{"Content-Type": "application/json", "User-Agent": "${{ env.AGENT }}", "Cookie": "${{ env.COOKIE }}"}'
