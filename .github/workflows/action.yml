@@ -17,8 +17,8 @@ jobs:
         env:
           JSON: '{"email": "${{ vars.V2FREE_EMAIL }}", "passwd": "${{ secrets.V2FREE_PASSWORD }}"}'
         run: |
-          curl -A $AGENT -c cookies -H $TYPE -d $JSON https://v2free.org/auth/login
+          curl -A '$AGENT' -c cookies -H '$TYPE' -d '$JSON' https://v2free.org/auth/login
         
       - name: Check in
         run: |
-          curl -A $AGENT -X POST -b cookies -H $TYPE https://v2free.org/user/checkin
+          curl -A '$AGENT' -X POST -b cookies -H '$TYPE' https://v2free.org/user/checkin
